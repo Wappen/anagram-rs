@@ -63,8 +63,8 @@ impl AnagramWordList {
             let vec = word_map.get_mut(&id);
 
             if let Some(vec) = vec {
-                println!("'{}' / '{}' -> [{:?}]", word, line, vec);
                 vec.push(word.to_string());
+                println!("'{}' / '{}' -> [{:?}]", word, line, vec);
             } else {
                 let vec = vec![word.to_string()];
                 println!("'{}' / '{}' -> [{:?}]", word, line, vec);
