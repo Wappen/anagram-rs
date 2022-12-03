@@ -25,9 +25,8 @@ impl Hash for AnagramID {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.count_map.len().hash(state);
 
-        for (char, count) in self.count_map.iter() {
-            char.hash(state);
-            count.hash(state);
+        for char_count in self.count_map.iter() {
+            char_count.hash(state);
         }
     }
 }
