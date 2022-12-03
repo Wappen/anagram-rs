@@ -49,14 +49,17 @@ pub struct AnagramWordList {
 }
 
 impl AnagramWordList {
-    pub fn load_from_file(path: &Path) -> io::Result<AnagramWordList> {
+    pub fn load_from_file(
+        path: &Path,
+        word_preprocess: fn(&str) -> &str,
+    ) -> io::Result<AnagramWordList> {
         let mut word_map: HashMap<AnagramID, Vec<String>> = HashMap::new();
 
         let content = fs::read_to_string(path)?;
         let lines = content.split('\n');
 
         for line in lines {
-            let word = line.trim();
+            let word = word_preprocess(line);
             let id = AnagramID::from(word);
             let vec = word_map.get_mut(&id);
 
