@@ -37,7 +37,7 @@ impl From<&str> for AnagramID {
         let mut count_map: BTreeMap<char, usize> = BTreeMap::new();
 
         for c in str.chars() {
-            count_map.insert(c, *count_map.get(&c).unwrap_or(&1));
+            count_map.insert(c, *count_map.get(&c).unwrap_or(&0) + 1);
         }
 
         AnagramID { count_map }
