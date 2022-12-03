@@ -3,7 +3,7 @@ use std::path::Path;
 use std::{fs, io};
 
 pub trait Anagrams {
-    fn get_all(&self, word: String) -> Option<&Vec<String>>;
+    fn get_all(&self, word: &str) -> Option<&Vec<String>>;
 }
 
 #[derive(Eq, PartialEq, Hash)]
@@ -11,8 +11,8 @@ struct AnagramID {
     count_map: BTreeMap<char, usize>,
 }
 
-impl From<&String> for AnagramID {
-    fn from(str: &String) -> Self {
+impl From<&str> for AnagramID {
+    fn from(str: &str) -> Self {
         let mut count_map: BTreeMap<char, usize> = BTreeMap::new();
 
         for c in str.chars() {
@@ -35,14 +35,14 @@ impl AnagramWordList {
         let lines = content.split('\n');
 
         for line in lines {
-            let word = line.trim().to_string();
-            let id = AnagramID::from(&word);
+            let word = line.trim();
+            let id = AnagramID::from(word);
             let vec = word_map.get_mut(&id);
 
             if let Some(vec) = vec {
-                vec.push(word);
+                vec.push(word.to_string());
             } else {
-                let vec = vec![word];
+                let vec = vec![word.to_string()];
                 word_map.insert(id, vec);
             }
         }
@@ -52,8 +52,8 @@ impl AnagramWordList {
 }
 
 impl Anagrams for AnagramWordList {
-    fn get_all(&self, word: String) -> Option<&Vec<String>> {
-        let id = AnagramID::from(&word);
+    fn get_all(&self, word: &str) -> Option<&Vec<String>> {
+        let id = AnagramID::from(word);
         self.word_map.get(&id)
     }
 }
