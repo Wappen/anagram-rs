@@ -1,5 +1,4 @@
-use countmap::CountMap;
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::hash::{Hash, Hasher};
 use std::path::Path;
 use std::{fs, io};
@@ -9,7 +8,7 @@ pub trait Anagrams {
 }
 
 struct AnagramID {
-    count_map: CountMap<char>,
+    count_map: BTreeMap<char, usize>,
 }
 
 impl PartialEq<Self> for AnagramID {
@@ -35,10 +34,10 @@ impl Hash for AnagramID {
 
 impl From<&str> for AnagramID {
     fn from(str: &str) -> Self {
-        let mut count_map: CountMap<char> = CountMap::new();
+        let mut count_map: BTreeMap<char, usize> = BTreeMap::new();
 
         for c in str.chars() {
-            count_map.insert_or_increment(c);
+            count_map.insert(c, *count_map.get(&c).unwrap_or(&1));
         }
 
         AnagramID { count_map }
